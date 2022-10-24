@@ -8,7 +8,7 @@ function App() {
    return (
       <div className="App">
          <header className="header flex items-center justify-center gap-x-5 text-white py-10 mb-5">
-            <span className="text-primary">Home</span>
+            <span className="text-primary relative after:absolute after:bottom-[-3px] after:w-1 after:h-1 after:rounded-full after:bg-primary after:left-[50%]">Home</span>
             <span className="">Movies</span>
          </header>
          <Banner />
