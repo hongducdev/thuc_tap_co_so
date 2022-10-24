@@ -7,8 +7,8 @@ module.exports = {
             body: ["Montserrat", "sans-serif"],
          },
          colors: {
-            primary: "#F9A826",
-         }
+            primary: "#66DE93",
+         },
       },
    },
    plugins: [],

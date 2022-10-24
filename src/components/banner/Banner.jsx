@@ -12,7 +12,6 @@ const Banner = () => {
    );
 
    const movies = data?.results || [];
-   console.log("🚀 ~ file: Banner.jsx ~ line 13 ~ Banner ~ movies", movies);
 
    return (
       <section className="banner h-[500px] page-container mb-10 overflow-hidden">
