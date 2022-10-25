@@ -4,7 +4,7 @@ const MovieCard = ({ item }) => {
    const { title, release_date, vote_average, poster_path } = item;
 
    return (
-      <div className="movie-card rounded-lg p-3 bg-slate-800 bg-opacity-50 select-none">
+      <div className="movie-card rounded-lg p-3 bg-slate-800 bg-opacity-50 select-none text-white">
          <img
             src={`https://image.tmdb.org/t/p/w500${poster_path}`}
             alt=""
