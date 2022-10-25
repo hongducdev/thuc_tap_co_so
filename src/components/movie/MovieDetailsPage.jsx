@@ -58,8 +58,65 @@ const MovieDetailsPage = () => {
          <p className="text-white text-center text-sm leading-relaxed max-w-[800px] mx-auto mb-10">
             {overview}
          </p>
+         <MovieCredits />
+         <MovieVideo />
       </>
    );
 };
+
+function MovieCredits() {
+   const { movieId } = useParams();
+
+   const { data, error } = useSWR(
+      `https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=${apiKey}`,
+      fetcher
+   );
+
+   const { cast } = data || {};
+   if (!data || cast.length <= 0) return null;
+   return (
+      <div>
+         <h2 className="text-center text-2xl mb-10 text-white font-semibold">
+            Casts
+         </h2>
+         <div className="grid grid-cols-4 gap-5 mb-10 max-w-[1000px] mx-auto">
+            {cast.slice(0, 4).map((item) => (
+               <div className="cast-item" key={item.id}>
+                  <img
+                     src={`https://image.tmdb.org/t/p/w500${item.profile_path}`}
+                     alt=""
+                     className="w-full h-[350px] object-cover rounded-lg"
+                  />
+                  <h3 className="text-white text-center mt-3 font-semibold">
+                     {item.name}
+                  </h3>
+                  <p className="text-primary text-center">{item.character}</p>
+               </div>
+            ))}
+         </div>
+      </div>
+   );
+}
+
+function MovieVideo() {
+   const { movieId } = useParams();
+
+   const { data, error } = useSWR(
+      `https://api.themoviedb.org/3/movie/${movieId}/videos?api_key=${apiKey}`,
+      fetcher
+   );
+
+   const { results } = data || {};
+   if (!data || results.length <= 0) return null;
+   console.log(results);
+   return (
+      <div>
+         <h2 className="text-center text-2xl mb-10 text-white font-semibold">
+            Videos
+         </h2>
+         
+      </div>
+   );
+}
 
 export default MovieDetailsPage;
