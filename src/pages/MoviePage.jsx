@@ -4,10 +4,13 @@ import MovieCard from "../components/movie/MovieCard";
 import { fetcher } from "../config";
 import useDebounce from "../hooks/useDebounce";
 
+const PageCount = 5;
+
 const MoviePage = () => {
+   const [nextPage, setNextPage] = useState(1);
    const [filter, setFilter] = useState("");
    const [url, setUrl] = useState(
-      "https://api.themoviedb.org/3/movie/popular?api_key=6557cc874dda0f42183d0f81b2746b3b"
+      `https://api.themoviedb.org/3/movie/popular?api_key=6557cc874dda0f42183d0f81b2746b3b&page=${nextPage}`
    );
    const filterDebounce = useDebounce(filter, 500);
 
@@ -22,16 +25,18 @@ const MoviePage = () => {
    useEffect(() => {
       if (filterDebounce) {
          setUrl(
-            `https://api.themoviedb.org/3/search/movie?api_key=6557cc874dda0f42183d0f81b2746b3b&query=${filterDebounce}`
+            `https://api.themoviedb.org/3/search/movie?api_key=6557cc874dda0f42183d0f81b2746b3b&query=${filterDebounce}&page=${nextPage}`
          );
       } else {
          setUrl(
-            "https://api.themoviedb.org/3/movie/popular?api_key=6557cc874dda0f42183d0f81b2746b3b"
+            `https://api.themoviedb.org/3/movie/popular?api_key=6557cc874dda0f42183d0f81b2746b3b&page=${nextPage}`
          );
       }
-   }, [filterDebounce]);
+   }, [filterDebounce, nextPage]);
 
    const movies = data?.results || [];
+
+   const { page, total_pages } = data || {};
 
    return (
       <div className="py-10 page-container">
@@ -69,7 +74,7 @@ const MoviePage = () => {
                movies.map((item) => <MovieCard key={item.id} item={item} />)}
          </div>
          <div className="flex items-center justify-center text-white mt-10 gap-x-5">
-            <span className="cursor-pointer">
+            <span className="cursor-pointer" onClick={() => nextPage - 1}>
                <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -84,10 +89,15 @@ const MoviePage = () => {
                   />
                </svg>
             </span>
-            <span className="cursor-pointer inline-block py-2 px-4 rounded-md bg-white text-slate-900 leading-none">
-               1
-            </span>
-            <span className="cursor-pointer">
+            {new Array(PageCount).fill(0).map((item, index) => (
+               <span 
+                  onClick={() => setNextPage(index + 1)}
+                  className="cursor-pointer inline-block py-2 px-4 rounded-md bg-white text-slate-900 leading-none"
+               >
+                  {index + 1}
+               </span>
+            ))}                                             
+            <span className="cursor-pointer" onClick={() => setNextPage(nextPage + 1)}>
                <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
