@@ -1,8 +1,11 @@
 import React from "react";
 import { useParams } from "react-router-dom";
+import { Swiper, SwiperSlide } from "swiper/react";
 
+import "swiper/css";
 import useSWR from "swr";
 import { apiKey, fetcher } from "../../config";
+import MovieCard from "./MovieCard";
 
 // https://api.themoviedb.org/3/movie/{movie_id}?api_key=6557cc874dda0f42183d0f81b2746b3b
 
@@ -60,6 +63,7 @@ const MovieDetailsPage = () => {
          </p>
          <MovieCredits />
          <MovieVideo />
+         <MovieSimilar />
       </>
    );
 };
@@ -76,7 +80,7 @@ function MovieCredits() {
    if (!data || cast.length <= 0) return null;
    return (
       <div>
-         <h2 className="text-center text-2xl mb-10 text-white font-semibold">
+         <h2 className="text-center text-3xl mb-10 text-white font-semibold">
             Casts
          </h2>
          <div className="grid grid-cols-4 gap-5 mb-10 max-w-[1000px] mx-auto">
@@ -108,13 +112,65 @@ function MovieVideo() {
 
    const { results } = data || {};
    if (!data || results.length <= 0) return null;
-   console.log(results);
    return (
       <div>
-         <h2 className="text-center text-2xl mb-10 text-white font-semibold">
+         <h2 className="text-center text-3xl mb-10 text-white font-semibold">
             Videos
          </h2>
-         
+         <div className="flex flex-col gap-10">
+            {results.slice(0, 5).map((item) => (
+               <div key={item.id}>
+                  <h3 className="text-primary text-center mb-10 text-2xl font-semibold">
+                     {item.name} - {item.type}
+                  </h3>
+                  <div className="w-full aspect-video">
+                     <iframe
+                        width="1280"
+                        height="720"
+                        src={`https://www.youtube.com/embed/${item.key}`}
+                        title={item.name}
+                        frameBorder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                        className="w-full h-full object-cover"></iframe>
+                  </div>
+               </div>
+            ))}
+         </div>
+      </div>
+   );
+}
+
+function MovieSimilar() {
+
+   const { movieId } = useParams();
+
+   const { data, error } = useSWR(
+      `https://api.themoviedb.org/3/movie/${movieId}/similar?api_key=${apiKey}`,
+      fetcher
+   );
+
+   const { results } = data || {};
+   if (!data || results.length <= 0) return null;
+
+   return (
+      <div className="py-10">
+         <h2 className="text-center text-3xl mb-10 text-white font-semibold">
+            Similar Movies
+         </h2>
+         <div className="movie-list">
+            <Swiper
+               grabCursor={"true"}
+               spaceBetween={40}
+               slidesPerView={"auto"}>
+               {results.length > 0 &&
+                  results.map((item) => (
+                     <SwiperSlide key={item.id}>
+                        <MovieCard item={item} />
+                     </SwiperSlide>
+                  ))}
+            </Swiper>
+         </div>
       </div>
    );
 }
