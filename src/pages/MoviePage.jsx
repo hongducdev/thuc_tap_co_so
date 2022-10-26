@@ -30,7 +30,8 @@ const MoviePage = () => {
    useEffect(() => {
       if (filterDebounce) {
          setUrl(
-            `https://api.themoviedb.org/3/search/movie?api_key=6557cc874dda0f42183d0f81b2746b3b&query=${filterDebounce}&page=${nextPage}`
+            // `https://api.themoviedb.org/3/search/movie?api_key=6557cc874dda0f42183d0f81b2746b3b&query=${filterDebounce}&page=${nextPage}`
+            
          );
       } else {
          setUrl(

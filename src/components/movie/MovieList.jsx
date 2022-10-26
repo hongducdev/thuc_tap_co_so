@@ -4,11 +4,11 @@ import "swiper/css";
 import MovieCard from "./MovieCard";
 import useSWR from "swr";
 
-import { fetcher } from "../../config";
+import { fetcher, tmdbAPI } from "../../config";
 
 const MovieList = ({ type = "now_playing" }) => {
    const { data } = useSWR(
-      `https://api.themoviedb.org/3/movie/${type}?api_key=6557cc874dda0f42183d0f81b2746b3b`,
+      tmdbAPI.getMovieList(type),
       fetcher
    );
 

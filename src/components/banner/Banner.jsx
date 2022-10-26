@@ -1,15 +1,16 @@
 import { Swiper, SwiperSlide } from "swiper/react";
-
+import { Pagination } from "swiper";
+import "swiper/css/pagination";
 import "swiper/css";
 
 import useSWR from "swr";
-import { fetcher } from "../../config";
+import { fetcher, tmdbAPI } from "../../config";
 import Button from "../button/Button";
 import { useNavigate } from "react-router-dom";
 
 const Banner = () => {
    const { data } = useSWR(
-      `https://api.themoviedb.org/3/movie/upcoming?api_key=6557cc874dda0f42183d0f81b2746b3b`,
+      tmdbAPI.getMovieList("upcoming"),
       fetcher
    );
 
@@ -17,12 +18,22 @@ const Banner = () => {
 
    return (
       <section className="banner h-[500px] page-container mb-10 overflow-hidden">
-         <Swiper grabCursor={'true'} slidesPerView={'auto'}>
-            {movies.length > 0 && movies.map((item) => (
-               <SwiperSlide key={item.id}>
-                  <BannerItem item={item} />
-               </SwiperSlide>
-            ))}
+         <Swiper
+            grabCursor={"true"}
+            slidesPerView={"auto"}
+            pagination={true}
+            modules={[Pagination]}
+            autoplay={{
+               delay: 3000,
+               disableOnInteraction: false,
+            }}
+            >
+            {movies.length > 0 &&
+               movies.map((item) => (
+                  <SwiperSlide key={item.id}>
+                     <BannerItem item={item} />
+                  </SwiperSlide>
+               ))}
          </Swiper>
       </section>
    );
@@ -35,7 +46,7 @@ function BannerItem({ item }) {
       <div className="w-full h-full rounded-lg relative text-white">
          <div className="overlay w-full h-full rounded-lg bg-black absolute opacity-40 inset-0"></div>
          <img
-            src={`https://image.tmdb.org/t/p/original/${poster_path}`}
+            src={tmdbAPI.imageOriginal(poster_path)}
             alt=""
             className="w-full h-full object-cover rounded-lg"
          />
