@@ -1,31 +1,38 @@
+import { lazy, Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
 import Main from "./components/layout/Main";
-import HomePage from "./pages/HomePage";
-import MoviePage from "./pages/MoviePage";
 import Banner from "./components/banner/Banner";
-import MovieDetailsPage from "./components/movie/MovieDetailsPage";
 
-// https://api.themoviedb.org/3/movie/now_playing?api_key=6557cc874dda0f42183d0f81b2746b3b
+const HomePage = lazy(() => import("./pages/HomePage"));
+const MoviePage = lazy(() => import("./pages/MoviePage"));
+const MovieDetailsPage = lazy(() => import("./components/movie/MovieDetailsPage"));
 
 function App() {
    return (
       <div className="App">
-         <Routes>
-            <Route element={<Main />}>
-               <Route
-                  path="/"
-                  element={
-                     <>
-                        <Banner />
-                        <HomePage />
-                     </>
-                  }></Route>
-               <Route path="/movies" element={<MoviePage />}></Route>
-               <Route
-                  path="/movie/:movieId"
-                  element={<MovieDetailsPage />}></Route>
-            </Route>
-         </Routes>
+         <Suspense
+            fallback={
+               <>
+                  <div className="w-10 h-10 rounded-full border-4 border-primary border-t-transparent border-t-4 mx-auto an"></div>
+               </>
+            }>
+            <Routes>
+               <Route element={<Main />}>
+                  <Route
+                     path="/"
+                     element={
+                        <>
+                           <Banner />
+                           <HomePage />
+                        </>
+                     }></Route>
+                  <Route path="/movies" element={<MoviePage />}></Route>
+                  <Route
+                     path="/movie/:movieId"
+                     element={<MovieDetailsPage />}></Route>
+               </Route>
+            </Routes>
+         </Suspense>
       </div>
    );
 }
