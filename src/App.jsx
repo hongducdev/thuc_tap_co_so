@@ -2,6 +2,7 @@ import { lazy, Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
 import Main from "./components/layout/Main";
 import Banner from "./components/banner/Banner";
+import PageNotFound from "components/PageNotFound/PageNotFound";
 
 const HomePage = lazy(() => import("./pages/HomePage"));
 const MoviePage = lazy(() => import("./pages/MoviePage"));
@@ -31,6 +32,7 @@ function App() {
                      path="/movie/:movieId"
                      element={<MovieDetailsPage />}></Route>
                </Route>
+               <Route path="*" element={<PageNotFound />}></Route>
             </Routes>
          </Suspense>
       </div>

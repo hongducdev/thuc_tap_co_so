@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import useSWR from "swr";
 import ReactPaginate from "react-paginate";
-import MovieCard from "components/movie/MovieCard";
+import MovieCard, { MovieCardSkeleton } from "components/movie/MovieCard";
 import { fetcher, tmdbAPI } from "apiConfig/config";
 import useDebounce from "hooks/useDebounce";
 
@@ -14,9 +14,7 @@ const MoviePage = () => {
 
    const [nextPage, setNextPage] = useState(1);
    const [filter, setFilter] = useState("");
-   const [url, setUrl] = useState(
-      tmdbAPI.getMovieList("popular", nextPage)
-   );
+   const [url, setUrl] = useState(tmdbAPI.getMovieList("popular", nextPage));
    const filterDebounce = useDebounce(filter, 500);
 
    const handleFilterChange = (e) => {
@@ -29,13 +27,9 @@ const MoviePage = () => {
 
    useEffect(() => {
       if (filterDebounce) {
-         setUrl(
-            tmdbAPI.getSearchedMovie(filterDebounce, nextPage)
-         );
+         setUrl(tmdbAPI.getSearchedMovie(filterDebounce, nextPage));
       } else {
-         setUrl(
-            tmdbAPI.getMovieList("popular", nextPage)
-         );
+         setUrl(tmdbAPI.getMovieList("popular", nextPage));
       }
    }, [filterDebounce, nextPage]);
 
@@ -80,7 +74,14 @@ const MoviePage = () => {
             </button>
          </div>
          {loading && (
-            <div className="w-10 h-10 rounded-full border-4 border-primary border-t-transparent border-t-4 mx-auto an"></div>
+            // <div className="w-10 h-10 rounded-full border-4 border-primary border-t-transparent border-t-4 mx-auto animate-spin"></div>
+            <div className="grid grid-cols-4 gap-10">
+               {Array.from(Array(20)).map((_, index) => (
+                  <div key={index}>
+                     <MovieCardSkeleton />
+                  </div>
+               ))}
+            </div>
          )}
          <div className="grid grid-cols-4 gap-10">
             {!loading &&
