@@ -57,118 +57,104 @@ const MovieDetailsPage = () => {
          <p className="text-white text-center text-sm leading-relaxed max-w-[800px] mx-auto mb-10">
             {overview}
          </p>
-         <MovieCredits />
-         <MovieVideo />
-         <MovieSimilar />
+         <MovieMeta type={"credits"} />
+         <MovieMeta type={"videos"} />
+         <MovieMeta type={"similar"} />
       </>
    );
 };
 
-function MovieCredits() {
+function MovieMeta({ type = "videos" }) {
    const { movieId } = useParams();
 
-   const { data, error } = useSWR(
-      tmdbAPI.getMovieMeta(movieId, "credits"),
-      fetcher
-   );
+   const { data, error } = useSWR(tmdbAPI.getMovieMeta(movieId, type), fetcher);
 
-   const { cast } = data || {};
-   if (!data || cast.length <= 0) return null;
-   return (
-      <div>
-         <h2 className="text-center text-3xl mb-10 text-white font-semibold">
-            Casts
-         </h2>
-         <div className="grid grid-cols-4 gap-5 mb-10 max-w-[1000px] mx-auto">
-            {cast.slice(0, 4).map((item) => (
-               <div className="cast-item" key={item.id}>
-                  <img
-                     src={tmdbAPI.imageW500(item.profile_path)}
-                     alt=""
-                     className="w-full h-[350px] object-cover rounded-lg"
-                  />
-                  <h3 className="text-white text-center mt-3 font-semibold">
-                     {item.name}
-                  </h3>
-                  <p className="text-primary text-center">{item.character}</p>
-               </div>
-            ))}
-         </div>
-      </div>
-   );
-}
+   if (type === "credits") {
+      const { cast } = data || {};
+      if (!cast || cast.length <= 0) return null;
 
-function MovieVideo() {
-   const { movieId } = useParams();
-
-   const { data, error } = useSWR(
-      tmdbAPI.getMovieMeta(movieId, "videos"),
-      fetcher
-   );
-
-   const { results } = data || {};
-   if (!data || results.length <= 0) return null;
-   return (
-      <div>
-         <h2 className="text-center text-3xl mb-10 text-white font-semibold">
-            Videos
-         </h2>
-         <div className="flex flex-col gap-10">
-            {results.slice(0, 5).map((item) => (
-               <div key={item.id}>
-                  <h3 className="text-primary text-center mb-10 text-2xl font-semibold">
-                     {item.name} - {item.type}
-                  </h3>
-                  <div className="w-full aspect-video">
-                     <iframe
-                        width="1280"
-                        height="720"
-                        src={`https://www.youtube.com/embed/${item.key}`}
-                        title={item.name}
-                        frameBorder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen
-                        className="w-full h-full object-cover"></iframe>
+      return (
+         <div>
+            <h2 className="text-center text-3xl mb-10 text-white font-semibold">
+               Casts
+            </h2>
+            <div className="grid grid-cols-4 gap-5 mb-10 max-w-[1000px] mx-auto">
+               {cast.slice(0, 4).map((item) => (
+                  <div className="cast-item" key={item.id}>
+                     <img
+                        src={tmdbAPI.imageW500(item.profile_path)}
+                        alt=""
+                        className="w-full h-[350px] object-cover rounded-lg"
+                     />
+                     <h3 className="text-white text-center mt-3 font-semibold">
+                        {item.name}
+                     </h3>
+                     <p className="text-primary text-center">
+                        {item.character}
+                     </p>
                   </div>
-               </div>
-            ))}
+               ))}
+            </div>
          </div>
-      </div>
-   );
-}
+      );
+   } else {
+      const { results } = data || {};
+      if (!results || results.length <= 0) return null;
 
-function MovieSimilar() {
-
-   const { movieId } = useParams();
-
-   const { data, error } = useSWR(
-      tmdbAPI.getMovieMeta(movieId, "similar"),
-      fetcher
-   );
-
-   const { results } = data || {};
-   if (!data || results.length <= 0) return null;
-
-   return (
-      <div className="py-10">
-         <h2 className="text-center text-3xl mb-10 text-white font-semibold">
-            Similar Movies
-         </h2>
-         <div className="movie-list">
-            <Swiper
-               grabCursor={"true"}
-               spaceBetween={40}
-               slidesPerView={"auto"}>
-               {results.length > 0 &&
-                  results.map((item) => (
-                     <SwiperSlide key={item.id}>
-                        <MovieCard item={item} />
-                     </SwiperSlide>
+      if (type === "videos") {
+         return (
+            <div>
+               <h2 className="text-center text-3xl mb-10 text-white font-semibold">
+                  Videos
+               </h2>
+               <div className="flex flex-col gap-10">
+                  {results.slice(0, 5).map((item) => (
+                     <div key={item.id}>
+                        <h3 className="text-primary text-center mb-10 text-2xl font-semibold">
+                           {item.name} - {item.type}
+                        </h3>
+                        <div className="w-full aspect-video">
+                           <iframe
+                              width="1280"
+                              height="720"
+                              src={`https://www.youtube.com/embed/${item.key}`}
+                              title={item.name}
+                              frameBorder="0"
+                              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                              allowFullScreen
+                              className="w-full h-full object-cover"></iframe>
+                        </div>
+                     </div>
                   ))}
-            </Swiper>
-         </div>
-      </div>
-   );
+               </div>
+            </div>
+         );
+      }
+
+      if (type === "similar") {
+         return (
+            <div className="py-10">
+               <h2 className="text-center text-3xl mb-10 text-white font-semibold">
+                  Similar Movies
+               </h2>
+               <div className="movie-list">
+                  <Swiper
+                     grabCursor={"true"}
+                     spaceBetween={40}
+                     slidesPerView={"auto"}>
+                     {results.length > 0 &&
+                        results.map((item) => (
+                           <SwiperSlide key={item.id}>
+                              <MovieCard item={item} />
+                           </SwiperSlide>
+                        ))}
+                  </Swiper>
+               </div>
+            </div>
+         );
+      }
+   }
+   return null;
 }
 
 export default MovieDetailsPage;
