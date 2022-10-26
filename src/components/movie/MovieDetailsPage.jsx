@@ -4,8 +4,8 @@ import { Swiper, SwiperSlide } from "swiper/react";
 
 import "swiper/css";
 import useSWR from "swr";
-import { apiKey, fetcher, tmdbAPI } from "../../config";
-import MovieCard from "./MovieCard";
+import { apiKey, fetcher, tmdbAPI } from "apiConfig/config";
+import MovieCard from "components/movie/MovieCard";
 
 // https://api.themoviedb.org/3/movie/{movie_id}?api_key=6557cc874dda0f42183d0f81b2746b3b
 

@@ -4,8 +4,8 @@ import "swiper/css/pagination";
 import "swiper/css";
 
 import useSWR from "swr";
-import { fetcher, tmdbAPI } from "../../config";
-import Button from "../button/Button";
+import { fetcher, tmdbAPI } from "apiConfig/config";
+import Button from "components/button/Button";
 import { useNavigate } from "react-router-dom";
 
 const Banner = () => {
