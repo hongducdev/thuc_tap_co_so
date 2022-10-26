@@ -2,6 +2,8 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { tmdbAPI } from "apiConfig/config";
 import Button from "components/button/Button";
+import PropTypes from "prop-types";
+import { withErrorBoundary } from "react-error-boundary";
 
 const MovieCard = ({ item }) => {
    const { title, release_date, vote_average, poster_path, id } = item;
@@ -27,11 +29,31 @@ const MovieCard = ({ item }) => {
                onClick={() => navigate(`/movie/${id}`)}
                bgColor="primary"
                children={"Watch Now"}
-               
             />
          </div>
       </div>
    );
 };
 
-export default MovieCard;
+MovieCard.propTypes = {
+   item: PropTypes.shape({
+      title: PropTypes.string.isRequired,
+      release_date: PropTypes.string.isRequired,
+      vote_average: PropTypes.number.isRequired,
+      poster_path: PropTypes.string.isRequired,
+      id: PropTypes.number.isRequired,
+   }),
+};
+
+function FallbackComponent() {
+   return (
+      <div className="flex flex-col items-center justify-center h-full">
+         <h1 className="text-2xl font-bold text-white">Something went wrong</h1>
+         <p className="text-white">Please try again later</p>
+      </div>
+   );
+}
+
+export default withErrorBoundary(MovieCard, {
+   FallbackComponent,
+});

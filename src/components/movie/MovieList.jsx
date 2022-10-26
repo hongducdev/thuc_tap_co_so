@@ -5,6 +5,8 @@ import MovieCard from "components/movie/MovieCard";
 import useSWR from "swr";
 
 import { fetcher, tmdbAPI } from "apiConfig/config";
+import PropTypes from "prop-types";
+import { withErrorBoundary } from "react-error-boundary";
 
 const MovieList = ({ type = "now_playing" }) => {
    const { data } = useSWR(
@@ -28,4 +30,19 @@ const MovieList = ({ type = "now_playing" }) => {
    );
 };
 
-export default MovieList;
+MovieList.propTypes = {
+   type: PropTypes.string,
+};
+
+function FallbackComponent() {
+   return (
+      <div className="flex flex-col items-center justify-center h-full">
+         <h1 className="text-2xl font-bold text-white">Something went wrong</h1>
+         <p className="text-white">Please try again later</p>
+      </div>
+   );
+}
+
+export default withErrorBoundary(MovieList, {
+   FallbackComponent,
+});
