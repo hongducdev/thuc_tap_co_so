@@ -12,24 +12,23 @@ const MovieCard = ({ item }) => {
    const navigate = useNavigate();
 
    return (
-      <div className="movie-card rounded-lg p-3 bg-slate-800 bg-opacity-50 select-none text-white">
+      <div className="p-3 text-white bg-opacity-50 rounded-lg select-none movie-card bg-slate-800">
          <img
-            src={tmdbAPI.imageW500(poster_path)}
-            alt=""
+            src={tmdbAPI.imageW500(poster_path) === null ? "/defaultImage.png" : tmdbAPI.imageW500(poster_path)}
+            alt={title}
             className="w-full h-[250px] object-cover rounded-md mb-5"
          />
          <div className="flex flex-col flex-1">
-            <h3 className="text-white text-xl font-bold mb-3 whitespace-nowrap overflow-hidden text-ellipsis">
+            <h3 className="mb-3 overflow-hidden text-xl font-bold text-white whitespace-nowrap text-ellipsis">
                {title}
             </h3>
-            <div className="flex items-center justify-between text-sm opacity-60 mb-5">
+            <div className="flex items-center justify-between mb-5 text-sm opacity-60">
                <span className="">{new Date(release_date).getFullYear()}</span>
                <span className="">{vote_average}</span>
             </div>
             <Button
                onClick={() => navigate(`/movie/${id}`)}
-               bgColor="primary"
-               children={"Watch Now"}
+               children={"Xem ngay"}
             />
          </div>
       </div>
@@ -61,13 +60,13 @@ export default withErrorBoundary(MovieCard, {
 
 export const MovieCardSkeleton = () => {
    return (
-      <div className="movie-card rounded-lg p-3 bg-slate-800 bg-opacity-50 select-none text-white">
+      <div className="p-3 text-white bg-opacity-50 rounded-lg select-none movie-card bg-slate-800">
          <LoadingSkeleton width="100%" height="250px" radius="8px" />
          <div className="flex flex-col flex-1">
-            <h3 className="text-white text-xl font-bold my-3 whitespace-nowrap overflow-hidden text-ellipsis">
+            <h3 className="my-3 overflow-hidden text-xl font-bold text-white whitespace-nowrap text-ellipsis">
                <LoadingSkeleton width="100%" height="20px" />
             </h3>
-            <div className="flex items-center justify-between text-sm opacity-60 mb-5">
+            <div className="flex items-center justify-between mb-5 text-sm opacity-60">
                <LoadingSkeleton width="100%" height="10px" />
             </div>
             <LoadingSkeleton width="100%" height="40px" radius="8px" />

@@ -8,7 +8,10 @@ import useDebounce from "hooks/useDebounce";
 const itemsPerPage = 20;
 
 const MoviePage = () => {
-   const [currentItems, setCurrentItems] = useState(null);
+
+   // title
+   document.title = "Phim - HDMovie";
+
    const [pageCount, setPageCount] = useState(0);
    const [itemOffset, setItemOffset] = useState(0);
 
@@ -48,16 +51,16 @@ const MoviePage = () => {
 
    return (
       <div className="py-10 page-container">
-         <div className="flex mb-10 gap-4">
+         <div className="flex gap-4 mb-10">
             <div className="flex-1">
                <input
                   type="text"
-                  className="w-full p-4 bg-slate-800 outline-none caret-white text-white placeholder-white placeholder-opacity-60 rounded-lg"
-                  placeholder="Type here to search..."
+                  className="w-full p-4 text-white placeholder-white rounded-lg outline-none bg-slate-800 caret-white placeholder-opacity-60"
+                  placeholder="Nhập tên phim để tìm kiếm..."
                   onChange={handleFilterChange}
                />
             </div>
-            <button className="p-4 bg-primary text-white rounded-lg">
+            <button className="p-4 text-white rounded-lg bg-primary">
                <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -74,7 +77,7 @@ const MoviePage = () => {
             </button>
          </div>
          {loading && (
-            // <div className="w-10 h-10 rounded-full border-4 border-primary border-t-transparent border-t-4 mx-auto animate-spin"></div>
+            // <div className="w-10 h-10 mx-auto border-4 border-t-4 rounded-full border-primary border-t-transparent animate-spin"></div>
             <div className="grid grid-cols-4 gap-10">
                {Array.from(Array(20)).map((_, index) => (
                   <div key={index}>

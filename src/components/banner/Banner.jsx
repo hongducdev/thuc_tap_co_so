@@ -1,5 +1,5 @@
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Pagination } from "swiper";
+import { Pagination, Autoplay } from "swiper";
 import "swiper/css/pagination";
 import "swiper/css";
 
@@ -9,68 +9,70 @@ import Button from "components/button/Button";
 import { useNavigate } from "react-router-dom";
 
 const Banner = () => {
-   const { data } = useSWR(
-      tmdbAPI.getMovieList("upcoming"),
-      fetcher
-   );
+  const { data } = useSWR(tmdbAPI.getMovieList("upcoming"), fetcher);
+  console.log(data);
 
-   const movies = data?.results || [];
+  const movies = data?.results || [];
 
-   return (
-      <section className="banner h-[500px] page-container mb-10 overflow-hidden">
-         <Swiper
-            grabCursor={"true"}
-            slidesPerView={"auto"}
-            pagination={true}
-            modules={[Pagination]}
-            autoplay={{
-               delay: 3000,
-               disableOnInteraction: false,
-            }}
-            >
-            {movies.length > 0 &&
-               movies.map((item) => (
-                  <SwiperSlide key={item.id}>
-                     <BannerItem item={item} />
-                  </SwiperSlide>
-               ))}
-         </Swiper>
-      </section>
-   );
+  return (
+    <section className="banner h-[500px] page-container mb-10 overflow-hidden">
+      <Swiper
+        loop={true}
+        spaceBetween={20}
+        pagination={{
+          clickable: true,
+        }}
+        autoplay={{
+          delay: 4000,
+          disableOnInteraction: false,
+        }}
+        modules={[Pagination, Autoplay]}>
+        {movies.length > 0 &&
+          movies.map((item) => (
+            <SwiperSlide key={item.id}>
+              <BannerItem item={item} />
+            </SwiperSlide>
+          ))}
+      </Swiper>
+    </section>
+  );
 };
 
 function BannerItem({ item }) {
-   const navigate = useNavigate();
-   const { title, poster_path, id } = item;
-   return (
-      <div className="w-full h-full rounded-lg relative text-white">
-         <div className="overlay w-full h-full rounded-lg bg-black absolute opacity-40 inset-0"></div>
-         <img
-            src={tmdbAPI.imageOriginal(poster_path)}
-            alt=""
-            className="w-full h-full object-cover rounded-lg"
-         />
-         <div className="absolute left-5 bottom-5 w-full">
-            <h2 className="font-bold text-3xl mb-5">{title}</h2>
-            <div className="flex items-center gap-x-3 mb-5">
-               <span className="px-3 py-2 border-white border rounded-md">
-                  Action
-               </span>
-               <span className="px-3 py-2 border-white border rounded-md">
-                  Action
-               </span>
-               <span className="px-3 py-2 border-white border rounded-md">
-                  Action
-               </span>
-            </div>
-            <Button
-               bgColor="primary"
-               children="Watch Now"
-               onClick={() => navigate(`/movie/${id}`)}
-            />
-         </div>
+  const navigate = useNavigate();
+  const { title, backdrop_path, id, genre_ids } = item;
+  return (
+    <div className="relative w-full h-full text-white rounded-lg">
+      <div className="absolute inset-0 w-full h-full bg-black rounded-lg overlay opacity-40"></div>
+      <img
+        src={
+          tmdbAPI.imageOriginal(backdrop_path) === null
+            ? "/defaultImage.png"
+            : tmdbAPI.imageOriginal(backdrop_path)
+        }
+        alt={title}
+        className="object-cover w-full h-full rounded-lg"
+        loading="lazy"
+      />
+      <div className="absolute w-full left-5 bottom-5">
+        <h2 className="mb-5 text-3xl font-bold">{title}</h2>
+        <div className="flex items-center mb-5 gap-x-3">
+          {genre_ids.map((id) => (
+            <span
+              className="px-3 py-2 border rounded-full text-primary border-primary"
+              key={id}>
+              {tmdbAPI.getGenreName(id)}
+            </span>
+          ))}
+        </div>
+        <Button
+          bgColor="primary"
+          children="Xem ngay"
+          onClick={() => navigate(`/movie/${id}`)}
+        />
       </div>
-   );
+    </div>
+  );
 }
 
 export default Banner;
