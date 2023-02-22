@@ -10,7 +10,7 @@ import MovieCard from "components/movie/MovieCard";
 const MovieDetailsPage = () => {
   const { movieId } = useParams();
 
-  const { data, error } = useSWR(tmdbAPI.getMovieDetails(movieId), fetcher);
+  const { data, error, isLoading } = useSWR(tmdbAPI.getMovieDetails(movieId), fetcher);
 
   useEffect(() => {
     document.title = `${data?.title} - HDMovie`;
@@ -22,7 +22,14 @@ const MovieDetailsPage = () => {
   if (error) {
     return (
       <div className="flex items-center justify-center w-full h-screen">
-        <h1 className="text-2xl font-bold text-white">Đã có lỗi xảy ra!</h1>
+        <div className="w-10 h-10 mx-auto border-4 border-t-4 rounded-full border-primary border-t-transparent animate-spin"></div>
+      </div>
+    );
+  }
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center w-full h-screen">
+        <h1 className="text-2xl font-bold text-white">Đang tải dữ liệu...</h1>
       </div>
     );
   }
@@ -73,7 +80,7 @@ const MovieDetailsPage = () => {
 function MovieMeta({ type = "videos" }) {
   const { movieId } = useParams();
 
-  const { data, error } = useSWR(tmdbAPI.getMovieMeta(movieId, type), fetcher);
+  const { data, error, isLoading } = useSWR(tmdbAPI.getMovieMeta(movieId, type), fetcher);
 
   if (!data) {
     return null;
@@ -81,8 +88,16 @@ function MovieMeta({ type = "videos" }) {
 
   if (error) {
     return (
-      <div className="flex items-center justify-center w-full h-screen">
+      <div className="flex items-center justify-center w-full">
         <h1 className="text-2xl font-bold text-white">Đã có lỗi xảy ra!</h1>
+      </div>
+    );
+  }
+  
+  if(isLoading) {
+    return (
+      <div className="flex items-center justify-center w-full">
+        <h1 className="text-2xl font-bold text-white">Đang tải dữ liệu...</h1>
       </div>
     );
   }
