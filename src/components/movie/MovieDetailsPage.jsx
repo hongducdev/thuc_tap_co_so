@@ -58,11 +58,13 @@ const MovieDetailsPage = () => {
       {genres.length > 0 && (
         <div className="flex items-center justify-center mb-10 gap-x-5">
           {genres.map((genre) => (
-            <span
-              className="px-4 py-3 border rounded-full text-primary border-primary"
-              key={genre.id}>
-              {genre.name}
-            </span>
+            <Link to={`/genre/${genre.id}`}>
+              <span
+                className="px-4 py-3 border rounded-full text-primary border-primary hover:bg-primary hover:text-white hover:duration-300 hover:ease-in-out"
+                key={genre.id}>
+                {genre.name}
+              </span>
+            </Link>
           ))}
         </div>
       )}
