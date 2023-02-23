@@ -3,6 +3,7 @@ import { Route, Routes } from "react-router-dom";
 import Main from "./components/layout/Main";
 import Banner from "./components/banner/Banner";
 import PageNotFound from "components/PageNotFound/PageNotFound";
+import Loading from "components/Loading/Loading";
 
 const HomePage = lazy(() => import("./pages/HomePage"));
 const MoviePage = lazy(() => import("./pages/MoviePage"));
@@ -18,7 +19,7 @@ function App() {
       <Suspense
         fallback={
           <div className="flex items-center justify-center w-full h-screen">
-            <div className="w-10 h-10 mx-auto border-4 border-t-4 rounded-full border-primary border-t-transparent animate-spin"></div>
+            <Loading />
           </div>
         }>
         <Routes>

@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import useSWR from "swr";
 import MovieCard, { MovieCardSkeleton } from "components/movie/MovieCard";
+import Loading from "components/Loading/Loading";
 
 const InfoPerson = () => {
 
@@ -35,7 +36,7 @@ const InfoPerson = () => {
     <div className="">
       {isLoading && !error && !movieCreditsError ? (
         <div className="flex items-center justify-center w-full h-screen">
-          <div className="w-10 h-10 mx-auto border-4 border-t-4 rounded-full border-primary border-t-transparent animate-spin"></div>
+          <Loading />
         </div>
       ) : (
         <div className="">

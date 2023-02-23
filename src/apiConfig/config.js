@@ -47,4 +47,5 @@ export const tmdbAPI = {
     `${tmdbEndPoint}/person/${id}/movie_credits?api_key=${apiKey}&language=vi-VN`,
   getMovieFromGenre: (id, page = 1) =>
     `${tmdbEndPoint}/discover/movie?api_key=${apiKey}&with_genres=${id}&language=vi-VN&page=${page}`,
+  getGenreList: () => `${tmdbEndPoint}/genre/movie/list?api_key=${apiKey}&language=vi-VN`,
 };

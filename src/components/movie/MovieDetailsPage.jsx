@@ -6,6 +6,7 @@ import "swiper/css";
 import useSWR from "swr";
 import { fetcher, tmdbAPI } from "apiConfig/config";
 import MovieCard from "components/movie/MovieCard";
+import Loading from "components/Loading/Loading";
 
 const MovieDetailsPage = () => {
   const { movieId } = useParams();
@@ -22,7 +23,7 @@ const MovieDetailsPage = () => {
   if (error) {
     return (
       <div className="flex items-center justify-center w-full h-screen">
-        <div className="w-10 h-10 mx-auto border-4 border-t-4 rounded-full border-primary border-t-transparent animate-spin"></div>
+        <Loading />
       </div>
     );
   }
