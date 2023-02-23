@@ -23,7 +23,7 @@ const Header = () => {
         Phim
       </NavLink>
       <NavLink
-        to="/genre/:genreId"
+        to="/genre/"
         className={({ isActive }) =>
           isActive
             ? "text-primary relative after:absolute after:w-1 after:h-1 after:rounded-full after:bg-primary after:-bottom-1 after:left-[50%]"
