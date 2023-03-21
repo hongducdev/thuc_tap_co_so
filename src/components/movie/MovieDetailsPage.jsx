@@ -11,11 +11,16 @@ import Loading from "components/Loading/Loading";
 const MovieDetailsPage = () => {
   const { movieId } = useParams();
 
-  const { data, error, isLoading } = useSWR(tmdbAPI.getMovieDetails(movieId), fetcher);
+  const { data, error, isLoading } = useSWR(
+    tmdbAPI.getMovieDetails(movieId),
+    fetcher
+  );
 
   useEffect(() => {
     document.title = `${data?.title} - HDMovie`;
   }, [data]);
+
+  console.log(data);
 
   if (!data) {
     return null;
@@ -44,7 +49,8 @@ const MovieDetailsPage = () => {
           className="w-full h-full bg-center bg-no-repeat bg-cover"
           style={{
             backgroundImage: `url(${tmdbAPI.imageOriginal(backdrop_path)})`,
-          }}></div>
+          }}
+        ></div>
       </div>
       <div className="w-full h-[400px] max-w-[800px] mx-auto -mt-[200px] relative z-10 pb-10">
         <img
@@ -62,7 +68,8 @@ const MovieDetailsPage = () => {
             <Link to={`/genre/${genre.id}`}>
               <span
                 className="px-4 py-3 border rounded-full text-primary border-primary hover:bg-primary hover:text-white hover:duration-300 hover:ease-in-out"
-                key={genre.id}>
+                key={genre.id}
+              >
                 {genre.name}
               </span>
             </Link>
@@ -73,6 +80,27 @@ const MovieDetailsPage = () => {
       <p className="text-white text-center text-sm leading-relaxed max-w-[800px] mx-auto mb-10">
         {overview}
       </p>
+      <div className="">
+        {/* năm phát hành */}
+        {/* thời lượng */}
+        {/* ngôn ngữ */}
+        {/* đánh giá */}
+
+        <div className="flex items-center justify-center gap-x-5 my-10">
+          <p className="text-white">
+            Ngày phát hành: <strong>{data.release_date}</strong>
+          </p>
+          <p className="text-white">
+            Thời lượng: <strong>{data.runtime} phút</strong>
+          </p>
+          <p className="text-white">
+            Ngôn ngữ: <strong>{data.original_language}</strong>
+          </p>
+          <p className="text-white">
+            Đánh giá: <strong>{data.vote_average} ({data.vote_count} người đánh giá)</strong>
+          </p>
+        </div>
+      </div>
       <MovieMeta type={"credits"} />
       <MovieMeta type={"videos"} />
       <MovieMeta type={"similar"} />
@@ -83,7 +111,10 @@ const MovieDetailsPage = () => {
 function MovieMeta({ type = "videos" }) {
   const { movieId } = useParams();
 
-  const { data, error, isLoading } = useSWR(tmdbAPI.getMovieMeta(movieId, type), fetcher);
+  const { data, error, isLoading } = useSWR(
+    tmdbAPI.getMovieMeta(movieId, type),
+    fetcher
+  );
 
   if (!data) {
     return null;
@@ -96,8 +127,8 @@ function MovieMeta({ type = "videos" }) {
       </div>
     );
   }
-  
-  if(isLoading) {
+
+  if (isLoading) {
     return (
       <div className="flex items-center justify-center w-full">
         <h1 className="text-2xl font-bold text-white">Đang tải dữ liệu...</h1>
@@ -118,12 +149,17 @@ function MovieMeta({ type = "videos" }) {
           grabCursor={"true"}
           spaceBetween={20}
           slidesPerView={5}
-          className="max-w-[1200px]">
+          className="max-w-[1200px]"
+        >
           {cast.map((item) => (
             <SwiperSlide key={item.id}>
               <div className="select-none cast-item" key={item.id}>
                 <img
-                  src={tmdbAPI.imageW500(item.profile_path) === null ? "https://via.placeholder.com/500x750" : tmdbAPI.imageW500(item.profile_path)}
+                  src={
+                    tmdbAPI.imageW500(item.profile_path) === null
+                      ? "https://via.placeholder.com/500x750"
+                      : tmdbAPI.imageW500(item.profile_path)
+                  }
                   alt={item.name}
                   className="h-[350px] object-cover rounded-lg"
                 />
@@ -164,7 +200,8 @@ function MovieMeta({ type = "videos" }) {
                     frameBorder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowFullScreen
-                    className="object-cover w-full h-full"></iframe>
+                    className="object-cover w-full h-full"
+                  ></iframe>
                 </div>
               </div>
             ))}
@@ -183,7 +220,8 @@ function MovieMeta({ type = "videos" }) {
             <Swiper
               grabCursor={"true"}
               spaceBetween={40}
-              slidesPerView={"auto"}>
+              slidesPerView={"auto"}
+            >
               {results.length > 0 &&
                 results.map((item) => (
                   <SwiperSlide key={item.id}>
