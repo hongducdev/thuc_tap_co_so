@@ -43,7 +43,7 @@ const MovieDetailsPage = () => {
 
   return (
     <>
-      <div className="w-full h-[600px] relative">
+      <div className="w-full h-[600px] relative hidden lg:block">
         <div className="absolute inset-0 w-full h-full bg-black overlay bg-opacity-70"></div>
         <div
           className="w-full h-full bg-center bg-no-repeat bg-cover"
@@ -52,7 +52,7 @@ const MovieDetailsPage = () => {
           }}
         ></div>
       </div>
-      <div className="w-full h-[400px] max-w-[800px] mx-auto -mt-[200px] relative z-10 pb-10">
+      <div className="w-full h-[400px] max-w-[800px] mx-auto lg:-mt-[200px] mt-0 relative z-10 pb-10">
         <img
           src={tmdbAPI.imageOriginal(backdrop_path)}
           alt=""
@@ -63,7 +63,7 @@ const MovieDetailsPage = () => {
         {title}
       </h1>
       {genres.length > 0 && (
-        <div className="flex items-center justify-center mb-10 gap-x-5">
+        <div className="flex items-center justify-center mb-10 gap-5 flex-wrap">
           {genres.map((genre) => (
             <Link to={`/genre/${genre.id}`}>
               <span
@@ -81,12 +81,7 @@ const MovieDetailsPage = () => {
         {overview}
       </p>
       <div className="">
-        {/* năm phát hành */}
-        {/* thời lượng */}
-        {/* ngôn ngữ */}
-        {/* đánh giá */}
-
-        <div className="flex items-center justify-center gap-x-5 my-10">
+        <div className="flex items-center justify-center gap-5 my-10 flex-wrap">
           <p className="text-white">
             Ngày phát hành: <strong>{data.release_date}</strong>
           </p>
@@ -148,7 +143,21 @@ function MovieMeta({ type = "videos" }) {
         <Swiper
           grabCursor={"true"}
           spaceBetween={20}
-          slidesPerView={5}
+          breakpoints={{
+            0: {
+              slidesPerView: 2,
+            },
+            640: {
+              slidesPerView: 2,
+            },
+            768: {
+              slidesPerView: 3,
+            },
+            1024: {
+              slidesPerView: 5,
+            },
+
+          }}
           className="max-w-[1200px]"
         >
           {cast.map((item) => (

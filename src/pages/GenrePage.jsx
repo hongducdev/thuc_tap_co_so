@@ -61,7 +61,7 @@ const GenrePage = () => {
               genreName?.find((genre) => genre.id === parseInt(genreId))?.name}
           </h1>
 
-          <div className="grid grid-cols-4 gap-10">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
             {genreMovies.map((movie) => (
               <MovieCard key={movie.id} item={movie} />
             ))}

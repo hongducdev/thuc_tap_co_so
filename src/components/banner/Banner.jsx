@@ -54,7 +54,7 @@ function BannerItem({ item }) {
       />
       <div className="absolute w-full left-5 bottom-5">
         <h2 className="mb-5 text-3xl font-bold">{title}</h2>
-        <div className="flex items-center mb-5 gap-x-3">
+        <div className="md:flex items-center mb-5 gap-x-3 hidden">
           {genre_ids.map((id) => (
             <Link
               key={id}
