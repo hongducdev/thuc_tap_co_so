@@ -41,12 +41,12 @@ const InfoPerson = () => {
       ) : (
         <div className="">
           <div className="max-w-[1200px] mx-auto">
-            <div className="flex gap-10">
+            <div className="flex gap-10 flex-col lg:flex-row">
               <div className="">
                 <img
                   src={tmdbAPI.imageOriginal(data?.profile_path)}
                   alt={data?.name}
-                  className="rounded-lg max-h-[400px] object-cover"
+                  className="rounded-lg w-full lg:max-h-[400px] object-cover"
                 />
               </div>
               <div className="">
@@ -73,7 +73,7 @@ const InfoPerson = () => {
               <h2 className="mb-5 text-2xl font-bold text-white">
                 Các bộ phim tham gia
               </h2>
-              <div className="grid grid-cols-4 gap-5">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
                 {movieCreditsIsLoading ? (
                   <div>
                     <MovieCardSkeleton />
